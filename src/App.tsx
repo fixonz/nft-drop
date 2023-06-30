@@ -7,6 +7,7 @@ import {
   useClaimerProofs,
   useClaimIneligibilityReasons,
   useContract,
+  publicSaleMint,
   useContractMetadata,
   useNFT,
   useUnclaimedNFTSupply,
@@ -395,28 +396,12 @@ export default function Home() {
                       </button>
                     </div>
                     <Web3Button
-                      contractAddress={
-                        contractQuery.contract?.getAddress() || ""
-                      }
-                      style={{
-                        backgroundColor:
-                          colors[primaryColor as keyof typeof colors] ||
-                          primaryColor,
-                        maxHeight: "43px",
-                      }}
-                      theme={theme}
-                      action={(cntr) => cntr.erc721.claim(quantity)}
-                      isDisabled={!canClaim || buttonLoading}
-                      onError={(err) => {
-                        console.error(err);
-                        console.log({ err });
-                        toast({
-                          title: "Failed to mint drop",
-                          description: (err as any).reason || "",
-                          duration: 9000,
-                          variant: "destructive",
-                        });
-                      }}
+      contractAddress="0xEd213c8A3C6808d3f6D25604EF30A59c32945bb9"
+      action={(contract) => {
+        contract.call("publicSaleMint", [quantity])
+      }}
+    >
+      publicSaleMint
                       onSuccess={() => {
                         toast({
                           title: "Successfully minted",
